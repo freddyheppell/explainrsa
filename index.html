@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Explain RSA</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="container" id="app">
+        <h1>ExplainRSA</h1>
+        <div class="alert alert-danger" role="alert">
+            <b>Don't use this for real encryption!</b> The prime numbers used are much smaller than they would normally be, and are not random enough.
+        </div>
+        <p>To begin the process of using RSA, click the generate button below:</p>
+        <button type="button" v-on:click="generate_keys" class="btn btn-primary">Generate Keys</button>
+        <hr>
+        <section v-if="d > 0">
+            <h3>Generating Keys</h3>
+            <p>Firstly, two random primes, <i class="m">p</i> and <i class="m">q</i>, are generated. These would usually be very long, and would differ in length by a few numbers.</p>
+            <p><i class="m">p</i> = {{ p }}</p>
+            <p><i class="m">q</i> = {{ q }}</p>
+            <p>Now, we calculate <i class="m">n</i>, where <i class="m">n = pq</i>. <i class="m">n</i> is used as a <i>modulus</i>. If you don't know what that is, then read this <a href="https://nrich.maths.org/4350">helpful article</a>.</p>
+            <p><i class="m">n</i> = {{ p }} &times; {{ q }} = {{ n }}</i></p>
+            <p>Now, we calculate <i class="m">&phi;</i> (pronounced 'phi').</p>
+            <p><i class="m">&phi;</i> = (p-1)(q-1) = ({{p}}-1)({{q}}-1) = {{ t }}</p>
+            <p>And finally, we calculate <i class="m">d</i> with <i class="m">d</i> = <i class="m">e<sup>-1</sup></i> mod <i class="m">&phi;</i></p>
+            <p><i class="m">d</i> = {{ e }}<sup>-1</sup> mod {{ t }} = {{ d }}</p>
+            <p>We now have our two keys, public and private.</p>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card-deck-wrapper">
+                        <div class="card-deck">
+                            <div class="card card-inverse card-success text-xs-center">
+                              <div class="card-block">
+                                <h4 class="card-title">Public Key</h4>
+                                <div class="card-text">This key can be given to anyone, and they will use it to send you encrypted messages</div>
+                                <div class="card-text"><i class="m">n</i> = {{n}}</div>
+                                <div class="card-text"><i class="m">e</i> = {{e}}</div>
+                              </div>
+                            </div>
+                            <div class="card card-inverse card-danger text-xs-center">
+                              <div class="card-block">
+                                <h4 class="card-title">Private Key</h4>
+                                <div class="card-text">This key is kept secret, and used to decrypt messages sent to you</div>
+                                <div class="card-text"><i class="m">d</i> = {{d}}</div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3>Encrypting and Decrypting a Number</h3>
+            <p>We'll start sending simple messages, using a number.</p>
+            <p>You send your public key to your friend, Bob, who encrypts a number with it.</p>
+            <label for="numberPlain">Pick a number between 1 and 100, or <a href="#" v-on:click.prevent="numberPlain = generate_random_number()">click here</a> to randomly pick one.</label>
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="number" min="1" max="100" class="form-control form-control-lg" id="numberPlain" v-model="numberPlain" v-on:keyup="encryptActivityOneNumber | debounce">
+                </div>
+            </div>
+            <p>We'll call this plaintext number <i class="m">m</i>, and the encrypted number <i class="m">c</i>.</p>
+            <p><i class="m">c</i> = <i class="m">m<sup>e</sup></i> mod {{n}} = {{ numberPlain }}<sup>{{e}}</sup> mod {{n}} = {{numberEncrypted}}</p>
+        </section>
+    </div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.27/vue.min.js" integrity="sha256-YogPEJrkzG2snap/2pnd2a0pToC4ox5KfDyQY+Om1o0=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/peterolson/BigInteger.js/54fe8d54ddcc0842bbf201c40388e34e66fc5590/BigInteger.min.js" integrity="sha384-LR4uaUeb5J6b16qD3sbSvkYj89+WxT4RGJJb2BS2SeXYbGRJsxkKnMnIsJkEh/sP" crossorigin="anonymous"></script>
+<script type="text/javascript" src="rsa.js"></script>
+<script type="text/javascript" src="scripts.js"></script>
+</body>
+</html>
