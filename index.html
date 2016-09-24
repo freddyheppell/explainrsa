@@ -14,16 +14,17 @@
         </div>
         <p>To begin the process of using RSA, click the generate button below:</p>
         <button type="button" v-on:click="generate_keys" class="btn btn-primary">Generate Keys</button>
+        <p><small>Please be aware that the page may lock up when generating keys, please be patient.</small></p>
         <hr>
-        <section v-if="d > 0">
+        <section v-if="q > 0" v-cloak>
             <h3>Generating Keys</h3>
             <p>Firstly, two random primes, <i class="m">p</i> and <i class="m">q</i>, are generated. These would usually be very long, and would differ in length by a few numbers.</p>
             <p><i class="m">p</i> = {{ p }}</p>
             <p><i class="m">q</i> = {{ q }}</p>
-            <p>Now, we calculate <i class="m">n</i>, where <i class="m">n = pq</i>. <i class="m">n</i> is used as a <i>modulus</i>. If you don't know what that is, then read this <a href="https://nrich.maths.org/4350">helpful article</a>.</p>
+            <p>Now, we calculate <i class="m">n</i>, where <i class="m">n</i> = <i class="m">pq</i>. <i class="m">n</i> is used as a <i>modulus</i>. If you don't know what that is, then read this <a href="https://nrich.maths.org/4350">helpful article</a>.</p>
             <p><i class="m">n</i> = {{ p }} &times; {{ q }} = {{ n }}</i></p>
             <p>Now, we calculate <i class="m">&phi;</i> (pronounced 'phi').</p>
-            <p><i class="m">&phi;</i> = (p-1)(q-1) = ({{p}}-1)({{q}}-1) = {{ t }}</p>
+            <p><i class="m">&phi;</i> = (<i class="m">p</i>-1)(<i class="m">q</i>-1) = ({{p}}-1)({{q}}-1) = {{ t }}</p>
             <p>And finally, we calculate <i class="m">d</i> with <i class="m">d</i> = <i class="m">e<sup>-1</sup></i> mod <i class="m">&phi;</i></p>
             <p><i class="m">d</i> = {{ e }}<sup>-1</sup> mod {{ t }} = {{ d }}</p>
             <p>We now have our two keys, public and private.</p>
@@ -50,23 +51,92 @@
                     </div>
                 </div>
             </div>
-            <h3>Encrypting and Decrypting a Number</h3>
-            <p>We'll start sending simple messages, using a number.</p>
-            <p>You send your public key to your friend, Bob, who encrypts a number with it.</p>
-            <label for="numberPlain">Pick a number between 1 and 100, or <a href="#" v-on:click.prevent="numberPlain = generate_random_number()">click here</a> to randomly pick one.</label>
-            <div class="row">
-                <div class="col-md-4">
-                    <input type="number" min="1" max="100" class="form-control form-control-lg" id="numberPlain" v-model="numberPlain" v-on:keyup="encryptActivityOneNumber | debounce">
-                </div>
+            <h3>Encrypting a Letter</h3>
+            <p>You send your public key to your friend, Bob, who encrypts a message with it.</p>
+            <p>We'll start sending a single letter. However, we encrypt it using an equation, so we need to turn it into a number.</p>
+            <label for="letterPick">Pick the letter that Bob will send to you</label>
+            <select v-model="aOneLetterPlain" class="form-control" id="letterPick">
+                <option value="1">A - 1</option>
+                <option value="2">B - 2</option>
+                <option value="3">C - 3</option>
+                <option value="4">D - 4</option>
+                <option value="5">E - 5</option>
+                <option value="6">F - 6</option>
+                <option value="7">G - 7</option>
+                <option value="8">H - 8</option>
+                <option value="9">I - 9</option>
+                <option value="10">J - 10</option>
+                <option value="11">K - 11</option>
+                <option value="12">L - 12</option>
+                <option value="13">M - 13</option>
+                <option value="14">N - 14</option>
+                <option value="15">O - 15</option>
+                <option value="16">P - 16</option>
+                <option value="17">Q - 17</option>
+                <option value="18">R - 18</option>
+                <option value="19">S - 19</option>
+                <option value="20">T - 20</option>
+                <option value="21">U - 21</option>
+                <option value="22">V - 22</option>
+                <option value="23">W - 23</option>
+                <option value="24">X - 24</option>
+                <option value="25">Y - 25</option>
+                <option value="26">Z - 26</option>
+            </select>
+            <div v-if="aOneLetterPlain != 0">
+                <p>We'll call this plaintext number <i class="m">m</i>, and the encrypted number <i class="m">c</i>.</p>
+                <p>Use the equation <i class="m">c</i> = <i class="m">m<sup>e</sup></i> mod <i class="m">n</i></p>
+                <p>{{ aOneLetterPlain }}<sup>{{e}}</sup> mod {{n}} = {{aOneLetterEncrypted}}</p>
+                <p>So, Bob will send you the number {{aOneLetterEncrypted}}. </p>
+
+                <h3>Decrypting a Letter</h3>
+                <p>Bob has sent you the number {{aOneLetterEncrypted}}. To decrypt it, you need to use your private key <i class="m">d</i>. We'll call the encrypted message <i class="m">c</i> and it's decrypted form <i class="m">m</i>. Only you can decrypt this because only you have <i class="m">d</i>, your private key.</p>
+                <p><i class="m">m</i> = <i class="m">c</i><sup><i class="m">d</i></sup> mod <i class="m">n</i></p>
+                <p><i class="m">m</i> = {{ aOneLetterEncrypted }}<sup>{{ d }}</sup> mod {{n}} = {{ decrypt(aOneLetterEncrypted) }}</p>
+                <p>If you turn that number into a letter you get {{ getLetterFromNumber(aOneLetterPlain) }}</p>
+
+                <h3>Encrypting and Decrypting Multiple Letter</h3>
+                <p>The simplest way to encrypt and decrypt multiple numbers is to encrypt and decrypt them individually.</p>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Plaintext letter</th>
+                            <th>Plaintext number</th>
+                            <th>Encrypted number</th>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>8</td>
+                            <td>{{ encrypt(8) }}</td>
+                        </tr>
+                        <tr>
+                            <td>E</td>
+                            <td>5</td>
+                            <td>{{ encrypt(5) }}</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>12</td>
+                            <td>{{ encrypt(12) }}</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>12</td>
+                            <td>{{ encrypt(12) }}</td>
+                        </tr>
+                        <tr>
+                            <td>O</td>
+                            <td>15</td>
+                            <td>{{ encrypt(15) }}</td>
+                        </tr>
+                    </thead>
+                </table>
             </div>
-            <p>We'll call this plaintext number <i class="m">m</i>, and the encrypted number <i class="m">c</i>.</p>
-            <p><i class="m">c</i> = <i class="m">m<sup>e</sup></i> mod {{n}} = {{ numberPlain }}<sup>{{e}}</sup> mod {{n}} = {{numberEncrypted}}</p>
         </section>
     </div>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.27/vue.min.js" integrity="sha256-YogPEJrkzG2snap/2pnd2a0pToC4ox5KfDyQY+Om1o0=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.rawgit.com/peterolson/BigInteger.js/54fe8d54ddcc0842bbf201c40388e34e66fc5590/BigInteger.min.js" integrity="sha384-LR4uaUeb5J6b16qD3sbSvkYj89+WxT4RGJJb2BS2SeXYbGRJsxkKnMnIsJkEh/sP" crossorigin="anonymous"></script>
-<script type="text/javascript" src="rsa.js"></script>
 <script type="text/javascript" src="scripts.js"></script>
 </body>
 </html>

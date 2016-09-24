@@ -1,4 +1,34 @@
 Vue.config.devtools = true;
+
+var letters = [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z"
+];
+
 new Vue({
     el: '#app',
     data: {
@@ -8,8 +38,7 @@ new Vue({
         p: 0,
         q: 0,
         t: 0,
-        numberPlain: 42,
-        numberEncrypted: null
+        aOneLetterPlain: 0
     },
 
     methods: {
@@ -38,39 +67,41 @@ new Vue({
         },
 
         random_prime: function(min, max) {
-            var p = Math.floor(Math.random() * ((max - 1) - min + 1)) + min;
-            if(bigInt(p).isPrime()===true){
-                return p;
-            } else {
-                return this.random_prime(min, max);   
+            while (true) {
+                var p = Math.floor(Math.random() * ((max - 1) - min + 1)) + min;
+                console.log("checking " + p)
+                if(bigInt(p).isPrime()===true){
+                    return p;
+                }
+                console.log(p + " is not prime");
             }
         },
-
-        generate_random_number: function() {
-            var max = 100000,
-                min = 1;
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        },
-
+        
         generate_keys: function() {
-            this.p = this.random_prime(1, 255);
-            this.q = this.random_prime(1, 255);
+            this.p = this.random_prime(1, 50);
+            this.q = this.random_prime(1, 50);
             this.n = this.p * this.q;
             this.t = (this.p-1)*(this.q-1);
             this.e = this.random_prime(1, this.t);
             this.d = this.modular_multiplicative_inverse(this.e, this.t);
         },
 
-        encryptActivityOneNumber: function () {
-            this.numberEncrypted = bigInt(this.numberPlain).pow(this.e).mod(this.n);
+        encrypt: function (m) {
+            return bigInt(m).pow(this.e).mod(this.n);
+        },
+
+        decrypt: function(mEnc) {
+            return bigInt(mEnc).pow(this.d).mod(this.n);
+        },
+        
+        getLetterFromNumber: function (n) {
+            return letters[n-1];
         }
     },
 
-    watch: {
-        numberPlain: function (val) {
-            if (this.numberPlain > 100) {
-                this.numberPlain = 100;
-            }
+    computed: {
+        aOneLetterEncrypted: function () {
+            return this.encrypt(this.aOneLetterPlain);
         }
     }
 })

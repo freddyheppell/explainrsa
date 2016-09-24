@@ -3,3 +3,11 @@ i.m {
     font-weight: bold;
     font-family: 'Times New Roman', serif;
 }
+
+body {
+    padding-bottom: 30px;
+}
+
+[v-cloak] {
+    display: none;
+}
