@@ -9,19 +9,24 @@
 
     <div class="container" id="app">
         <h1>ExplainRSA</h1>
-        <div class="alert alert-danger" role="alert">
-            <b>Don't use this for real encryption!</b> The prime numbers used are much smaller than they would normally be, and are not random enough.
-        </div>
+        <p><a href="README.md">README &amp; License</a> &bull; <a href="https://github.com/freddinator/explainrsa">Contribute on GitHub</a></p>
+        <p>ExplainRSA is an interactive demonstration of the RSA Algorithm, written in Javascript.</p>
+        <p>Please note that:</p>
+        <ul>
+            <li>Javascript's randomness is not cryptography safe, and therefore this tool cannot provide real security</li>
+            <li>This demo uses base primes of 1-50, which is very easily crackable. Real RSA algorithms use primes starting at 2<sup>511</sup> length.</li>
+            <li>Occasionally the demonstration can lock up if the primes generated are both large. This is due to the limitations of browsers. Again, real RSA algorithms are significantly faster.</li>
+            <li>The equations update live based on the initial values of <i class="m">p</i> and <i class="m">q</i>. You can click the Generate button repeatedly to change their values.</li>
+        </ul>
         <p>To begin the process of using RSA, click the generate button below:</p>
         <button type="button" v-on:click="generate_keys" class="btn btn-primary">Generate Keys</button>
-        <p><small>Please be aware that the page may lock up when generating keys, please be patient.</small></p>
         <hr>
-        <section v-if="q > 0" v-cloak>
+        <section v-if="q > 0" v-cloak transition="expand">
             <h3>Generating Keys</h3>
             <p>Firstly, two random primes, <i class="m">p</i> and <i class="m">q</i>, are generated. These would usually be very long, and would differ in length by a few numbers.</p>
             <p><i class="m">p</i> = {{ p }}</p>
             <p><i class="m">q</i> = {{ q }}</p>
-            <p>Now, we calculate <i class="m">n</i>, where <i class="m">n</i> = <i class="m">pq</i>. <i class="m">n</i> is used as a <i>modulus</i>. If you don't know what that is, then read this <a href="https://nrich.maths.org/4350">helpful article</a>.</p>
+            <p>Now, we calculate <i class="m">n</i>, where <i class="m">n</i> = <i class="m">pq</i>. <i class="m">n</i> is used as a <i>modulus</i>. The modulus finds the remainder when you perform a division. For example 10 mod 3 is 1, because 3 goes into 10 three times, giving a remainder of 1.</p>
             <p><i class="m">n</i> = {{ p }} &times; {{ q }} = {{ n }}</i></p>
             <p>Now, we calculate <i class="m">&phi;</i> (pronounced 'phi').</p>
             <p><i class="m">&phi;</i> = (<i class="m">p</i>-1)(<i class="m">q</i>-1) = ({{p}}-1)({{q}}-1) = {{ t }}</p>
@@ -51,8 +56,8 @@
                     </div>
                 </div>
             </div>
-            <h3>Encrypting a Letter</h3>
-            <p>You send your public key to your friend, Bob, who encrypts a message with it.</p>
+            <h3 id="encrypting">Encrypting a Letter</h3>
+            <p>You send your public key to your friend, Bob, who wants to encrypt a message with it. How can he do that?</p>
             <p>We'll start sending a single letter. However, we encrypt it using an equation, so we need to turn it into a number.</p>
             <label for="letterPick">Pick the letter that Bob will send to you</label>
             <select v-model="aOneLetterPlain" class="form-control" id="letterPick">
@@ -83,7 +88,7 @@
                 <option value="25">Y - 25</option>
                 <option value="26">Z - 26</option>
             </select>
-            <div v-if="aOneLetterPlain != 0">
+            <div v-if="aOneLetterPlain != 0" transition="expand">
                 <p>We'll call this plaintext number <i class="m">m</i>, and the encrypted number <i class="m">c</i>.</p>
                 <p>Use the equation <i class="m">c</i> = <i class="m">m<sup>e</sup></i> mod <i class="m">n</i></p>
                 <p>{{ aOneLetterPlain }}<sup>{{e}}</sup> mod {{n}} = {{aOneLetterEncrypted}}</p>
@@ -136,7 +141,9 @@
     </div>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.27/vue.min.js" integrity="sha256-YogPEJrkzG2snap/2pnd2a0pToC4ox5KfDyQY+Om1o0=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.rawgit.com/peterolson/BigInteger.js/54fe8d54ddcc0842bbf201c40388e34e66fc5590/BigInteger.min.js" integrity="sha384-LR4uaUeb5J6b16qD3sbSvkYj89+WxT4RGJJb2BS2SeXYbGRJsxkKnMnIsJkEh/sP" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.js" integrity="sha256-p95IL1RESG1u1ynqmQcAY3f8iXyCWEBX/xtCjdUluG8=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="scripts.js"></script>
 </body>
 </html>
