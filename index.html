@@ -136,6 +136,20 @@
                         </tr>
                     </thead>
                 </table>
+
+                <h3>Activities</h3>
+                <p>Right now the 1-26 method only works with A-Z. Come up with a system supporting A-Z, a-z, 0-9 and characters such as spaces, commas and full stops. <a href="#q1answer" data-toggle="collapse" href="#q1answer">Show solution</a></p>
+                <div class="collapse" id="q1answer">
+                    <div class="card card-block collapse" id="q1answer">
+                      <p class="card-text">You could use 1-26 for uppercase, 27-52 for lowercase, 53-62 for numbers and 63-65 for symbols.</p>
+                    </div>
+                </div>
+                <p>Does such a system already exist? <a href="#q2answer" data-toggle="collapse" href="#q2answer">Show solution</a></p>
+                <div class="collapse" id="q2answer">
+                    <div class="card card-block" id="q2answer">
+                      <p class="card-text">Yes! It's called Unicode. There's a table showing decimal numbers for the most common characters <a href="http://www.utf8-chartable.de/unicode-utf8-table.pl?number=1024&utf8=dec&view=2">here</a>. Use the dec. column as the <i class="m">m</i> value.</p>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -143,6 +157,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.27/vue.min.js" integrity="sha256-YogPEJrkzG2snap/2pnd2a0pToC4ox5KfDyQY+Om1o0=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.rawgit.com/peterolson/BigInteger.js/54fe8d54ddcc0842bbf201c40388e34e66fc5590/BigInteger.min.js" integrity="sha384-LR4uaUeb5J6b16qD3sbSvkYj89+WxT4RGJJb2BS2SeXYbGRJsxkKnMnIsJkEh/sP" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="sha384-VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.js" integrity="sha256-p95IL1RESG1u1ynqmQcAY3f8iXyCWEBX/xtCjdUluG8=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="scripts.js"></script>
 </body>
