@@ -4,6 +4,11 @@ i.m {
     font-family: 'Georgia', 'Times New Roman', serif;
 }
 
+i.mt {
+  font-style: italic;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
 body {
     padding-bottom: 30px;
 }
@@ -29,4 +34,8 @@ label {
 
 h3 {
     margin-top: 10px;
+}
+
+.card-inverse .card-text {
+  color: white;
 }

@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text:600i" rel="stylesheet">
     <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
@@ -28,12 +29,14 @@
             <p>Firstly, two random primes, <i class="m">p</i> and <i class="m">q</i>, are generated. These would usually be very long, and would differ in length by a few numbers.</p>
             <p><i class="m">p</i> = {{ p }}</p>
             <p><i class="m">q</i> = {{ q }}</p>
-            <p>Now, we calculate <i class="m">n</i>, where <i class="m">n</i> = <i class="m">pq</i>. <i class="m">n</i> is used as a <i>modulus</i>. The modulus finds the remainder when you perform a division. For example 10 mod 3 is 1, because 3 goes into 10 three times, giving a remainder of 1.</p>
+            <p>Now, we calculate <i class="m">n</i>, where <i class="m">n</i> = <i class="m">pq</i>. <i class="m">n</i> is used as a <i>modulus</i>. The modulus finds the remainder when you perform a division. For example 10 <i class="mt">mod</i> 3 is 1, because 3 goes into 10 three times, giving a remainder of 1.</p>
             <p><i class="m">n</i> = {{ p }} &times; {{ q }} = {{ n }}</i></p>
             <p>Now, we calculate <i class="m">&phi;</i> (pronounced 'phi').</p>
             <p><i class="m">&phi;</i> = (<i class="m">p</i>-1)(<i class="m">q</i>-1) = ({{p}}-1)({{q}}-1) = {{ t }}</p>
-            <p>And finally, we calculate <i class="m">d</i> with <i class="m">d</i> = <i class="m">e<sup>-1</sup></i> mod <i class="m">&phi;</i></p>
-            <p><i class="m">d</i> = {{ e }}<sup>-1</sup> mod {{ t }} = {{ d }}</p>
+            <p>We generate another prime, <i class="m">e</i>, between 1 and <i class="m">&phi;</i>.</p>
+            <p><i class="m">e</i> = {{ e }}</p>
+            <p>And finally, we calculate <i class="m">d</i> with <i class="m">d</i> = <i class="m">e<sup>-1</sup></i> <i class="mt">mod</i> <i class="m">&phi;</i></p>
+            <p><i class="m">d</i> = {{ e }}<sup>-1</sup> <i class="mt">mod</i> {{ t }} = {{ d }}</p>
             <p>We now have our two keys, public and private.</p>
             <div class="row">
                 <div class="col-md-8">
@@ -92,14 +95,14 @@
             </select>
             <div v-if="aOneLetterPlain != 0" transition="expand">
                 <p>We'll call this plaintext number <i class="m">m</i>, and the encrypted number <i class="m">c</i>.</p>
-                <p>Use the equation <i class="m">c</i> = <i class="m">m<sup>e</sup></i> mod <i class="m">n</i></p>
-                <p>{{ aOneLetterPlain }}<sup>{{e}}</sup> mod {{n}} = {{aOneLetterEncrypted}}</p>
+                <p>Use the equation <i class="m">c</i> = <i class="m">m<sup>e</sup></i> <i class="mt">mod</i> <i class="m">n</i></p>
+                <p>{{ aOneLetterPlain }}<sup>{{e}}</sup> <i class="mt">mod</i> {{n}} = {{aOneLetterEncrypted}}</p>
                 <p>So, Bob will send you the number {{aOneLetterEncrypted}}. </p>
 
                 <h3>Decrypting a Letter</h3>
                 <p>Bob has sent you the number {{aOneLetterEncrypted}}. To decrypt it, you need to use your private key <i class="m">d</i>. We'll call the encrypted message <i class="m">c</i> and it's decrypted form <i class="m">m</i>. Only you can decrypt this because only you have <i class="m">d</i>, your private key.</p>
-                <p><i class="m">m</i> = <i class="m">c</i><sup><i class="m">d</i></sup> mod <i class="m">n</i></p>
-                <p><i class="m">m</i> = {{ aOneLetterEncrypted }}<sup>{{ d }}</sup> mod {{n}} = {{ decrypt(aOneLetterEncrypted) }}</p>
+                <p><i class="m">m</i> = <i class="m">c</i><sup><i class="m">d</i></sup> <i class="mt">mod</i> <i class="m">n</i></p>
+                <p><i class="m">m</i> = {{ aOneLetterEncrypted }}<sup>{{ d }}</sup> <i class="mt">mod</i> {{n}} = {{ decrypt(aOneLetterEncrypted) }}</p>
                 <p>If you turn that number into a letter you get {{ getLetterFromNumber(aOneLetterPlain) }}</p>
 
                 <h3>Encrypting and Decrypting Multiple Letters</h3>
@@ -143,10 +146,10 @@
     </div>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.27/vue.min.js" integrity="sha256-YogPEJrkzG2snap/2pnd2a0pToC4ox5KfDyQY+Om1o0=" crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script> -->
 <script type="text/javascript" src="https://cdn.rawgit.com/peterolson/BigInteger.js/54fe8d54ddcc0842bbf201c40388e34e66fc5590/BigInteger.min.js" integrity="sha384-LR4uaUeb5J6b16qD3sbSvkYj89+WxT4RGJJb2BS2SeXYbGRJsxkKnMnIsJkEh/sP" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="sha384-VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.js" integrity="sha256-p95IL1RESG1u1ynqmQcAY3f8iXyCWEBX/xtCjdUluG8=" crossorigin="anonymous"></script>
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="sha384-VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script> -->
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.js" integrity="sha256-p95IL1RESG1u1ynqmQcAY3f8iXyCWEBX/xtCjdUluG8=" crossorigin="anonymous"></script> -->
 <script type="text/javascript" src="scripts.js?v=2"></script>
 </body>
 </html>
