@@ -1,7 +1,8 @@
 # ExplainRSA
 ExplainRSA is an interactive demonstration of the power of RSA.
 
-## License
+## License
+
 ![CC-BY-SA Icon](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 
 Text licensed under [CC-BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/)
